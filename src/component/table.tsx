@@ -10,10 +10,10 @@ export const Table: React.FC = () => {
             <th className='w-64 border border-white rounded-lg text-white bg-LIGHT_BLUE text-sm font-normal font-serif'>
               Label
             </th>
-            <th className='w-16 border border-white rounded-lg text-white bg-LIGHT_BLUE text-sm font-normal font-serif'>
+            <th className='w-28 border border-white rounded-lg text-white bg-LIGHT_BLUE text-sm font-normal font-serif'>
               Vision
             </th>
-            <th className='w-16 border border-white rounded-lg text-white bg-LIGHT_BLUE text-sm font-normal font-serif'>
+            <th className='w-28 border border-white rounded-lg text-white bg-LIGHT_BLUE text-sm font-normal font-serif'>
               Ability
             </th>
             <th className='w-28 border border-white rounded-lg text-white bg-LIGHT_BLUE text-sm font-normal font-serif'>
@@ -23,17 +23,26 @@ export const Table: React.FC = () => {
         </thead>
         <tbody>
           <tr>
-            <td className='border border-LIGHT_BLUE rounded-md  text-sm font-normal font-serif'>
-              <input type='text' />
+            <td className=' border border-LIGHT_BLUE rounded-md  text-sm font-normal font-serif'>
+              <input
+                type='text'
+                className='px-2 w-full focus:outline-none cursor-pointer'
+              />
             </td>
             <td className='border border-LIGHT_BLUE rounded-md   text-sm font-normal font-serif'>
-              <input type='number' />
+              <input
+                type='number'
+                className='px-2 w-full focus:outline-none cursor-pointer'
+              />
             </td>
             <td className='border border-LIGHT_BLUE rounded-md text-sm font-normal font-serif'>
-              <input type='number' />
+              <input
+                type='number'
+                className='px-2 w-full focus:outline-none cursor-pointer'
+              />
             </td>
             <td>
-              <button> delete </button>
+              <button>Delete</button>
             </td>
           </tr>
         </tbody>
