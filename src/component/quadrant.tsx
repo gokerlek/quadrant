@@ -72,9 +72,17 @@ export const Quadrant: React.FC = () => {
       e.target as HTMLDivElement
     ).parentElement!.getBoundingClientRect();
 
-    onDragData[index].vision = (e.clientX - coordinate.x) / 4;
-    onDragData[index].ability = (400 - e.clientY + coordinate.y) / 4;
+    const visionValue = document.getElementById(
+      onDragData[index].id + "vision"
+    );
+    const abilityValue = document.getElementById(
+      onDragData[index].id + "ability"
+    );
 
+    onDragData[index].vision = (e.clientX - coordinate.x) / 4;
+    (visionValue as any).value = (e.clientX - coordinate.x) / 4;
+    onDragData[index].ability = (400 - e.clientY + coordinate.y) / 4;
+    (abilityValue as any).value = (400 - e.clientY + coordinate.y) / 4;
     setTableRow(onDragData);
   };
   return (
@@ -119,6 +127,7 @@ export const Quadrant: React.FC = () => {
                 className='px-2 w-full focus:outline-none cursor-pointer '
                 onChange={(e) => onChange(e, index)}
                 name={"vision"}
+                id={rowValue.id + "vision"}
               />
             </td>
             <td className='border border-LIGHT_BLUE rounded-md text-sm font-normal py-0'>
@@ -130,6 +139,7 @@ export const Quadrant: React.FC = () => {
                 className='px-2 w-full focus:outline-none cursor-pointer '
                 onChange={(e) => onChange(e, index)}
                 name={"ability"}
+                id={rowValue.id + "ability"}
               />
             </td>
             <td>
