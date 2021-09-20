@@ -65,29 +65,28 @@ export const Quadrant: React.FC = () => {
   };
 
   // getting point coordinates
-  const onDrag = (e: React.DragEvent<HTMLDivElement>) => {
-    const coordinate: any = (
+  const onDrag = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    const onDragData = [...tableRow];
+
+    const coordinate = (
       e.target as HTMLDivElement
-    ).parentElement?.getBoundingClientRect();
-    const coordinateVision = (e.clientX - coordinate.x) / 4;
-    const coordinateAbility = (400 - e.clientY + coordinate.y) / 4;
+    ).parentElement!.getBoundingClientRect();
 
-    const updateWithDrag = {
-      ability: coordinateAbility,
-      vision: coordinateVision,
-    };
-    console.log(updateWithDrag);
+    onDragData[index].vision = (e.clientX - coordinate.x) / 4;
+    onDragData[index].ability = (400 - e.clientY + coordinate.y) / 4;
+
+    setTableRow(onDragData);
   };
-
   return (
     <>
       <Chart>
         <ChartArea />
-        {tableRow.map((rowValue) => (
+        {tableRow.map((rowValue, index) => (
           <div
             key={rowValue.id}
             draggable='true'
-            onDrag={(e) => onDrag(e)}
+            onDrag={(e) => onDrag(e, index)}
+            onDragOver={(e) => e.preventDefault()}
             style={{
               bottom: `${rowValue.ability * 4}px`,
               left: `${rowValue.vision * 4}px`,
