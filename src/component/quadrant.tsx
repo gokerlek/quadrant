@@ -1,9 +1,8 @@
 import { Chart } from "./chart";
 import { Table } from "./table";
-import React, { useState } from "react";
-import { TableRowInterface } from "../store/table-row.interfaces";
+import React, { useEffect, useState } from "react";
+import { TableRowInterface } from "./table-row.interfaces";
 import { ChartArea } from "./chart-area";
-import { Point } from "./point";
 import { Button } from "./button";
 
 const defaultData: TableRowInterface[] = [
@@ -14,14 +13,26 @@ const defaultData: TableRowInterface[] = [
     id: Date.now().valueOf(),
   },
 ];
-export const Quadrant: React.FC = () => {
-  const [tableRow, setTableRow] = useState<TableRowInterface[]>(defaultData);
 
+export const Quadrant: React.FC = () => {
+  //Local Storage
+  const key = "tableRow";
+
+  const [tableRow, setTableRow] = useState<TableRowInterface[]>(() => {
+    const persistedValue = window.localStorage.getItem(key);
+    return persistedValue !== null ? JSON.parse(persistedValue) : defaultData;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(tableRow));
+  }, [tableRow]);
+
+  // Delete new row function
   const onDelete = (id: number) => {
     const newList = tableRow.filter((item) => item.id !== id);
     setTableRow(newList);
   };
-
+  // Add new row function
   const onAdd = () => {
     const newTableRow = tableRow;
     newTableRow.push(
@@ -37,18 +48,35 @@ export const Quadrant: React.FC = () => {
     setTableRow([...newTableRow]);
   };
 
+  // get data from input field
   const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const updateTableRow = [...tableRow];
-
-    if (e.target.name === "label") {
-      updateTableRow[index].label = e.target.value;
-    } else if (e.target.name === "vision") {
-      updateTableRow[index].vision = e.target.value as unknown as number;
-    } else if (e.target.name === "ability") {
-      updateTableRow[index].ability = e.target.value as unknown as number;
+    const data = updateTableRow[index];
+    const value = e.target.value;
+    const name = e.target.name;
+    if (name === "label") {
+      data.label = value;
+    } else if (name === "vision") {
+      data.vision = value as unknown as number;
+    } else if (name === "ability") {
+      data.ability = value as unknown as number;
     }
-
     setTableRow(updateTableRow);
+  };
+
+  // getting point coordinates
+  const onDrag = (e: React.DragEvent<HTMLDivElement>) => {
+    const coordinate: any = (
+      e.target as HTMLDivElement
+    ).parentElement?.getBoundingClientRect();
+    const coordinateVision = (e.clientX - coordinate.x) / 4;
+    const coordinateAbility = (400 - e.clientY + coordinate.y) / 4;
+
+    const updateWithDrag = {
+      ability: coordinateAbility,
+      vision: coordinateVision,
+    };
+    console.log(updateWithDrag);
   };
 
   return (
@@ -56,12 +84,19 @@ export const Quadrant: React.FC = () => {
       <Chart>
         <ChartArea />
         {tableRow.map((rowValue) => (
-          <Point
+          <div
             key={rowValue.id}
-            top={rowValue.ability * 4}
-            left={rowValue.vision * 4}
-            label={rowValue.label}
-          />
+            draggable='true'
+            onDrag={(e) => onDrag(e)}
+            style={{
+              bottom: `${rowValue.ability * 4}px`,
+              left: `${rowValue.vision * 4}px`,
+            }}
+            className='absolute opacity-70 rounded-full m-0 bg-DARK_BLUE w-4 h-4 transform origin-center -translate-x-1/2  translate-y-1/2'>
+            <div className='transform translate-y-4 translate-x-1/2'>
+              {rowValue.label}
+            </div>
+          </div>
         ))}
       </Chart>
       <Table onAdd={onAdd}>
@@ -79,6 +114,8 @@ export const Quadrant: React.FC = () => {
             <td className='border border-LIGHT_BLUE rounded-md   text-sm font-normal py-0 '>
               <input
                 defaultValue={rowValue.vision}
+                max='100'
+                min='0'
                 type='number'
                 className='px-2 w-full focus:outline-none cursor-pointer '
                 onChange={(e) => onChange(e, index)}
@@ -88,6 +125,8 @@ export const Quadrant: React.FC = () => {
             <td className='border border-LIGHT_BLUE rounded-md text-sm font-normal py-0'>
               <input
                 defaultValue={rowValue.ability}
+                max='100'
+                min='0'
                 type='number'
                 className='px-2 w-full focus:outline-none cursor-pointer '
                 onChange={(e) => onChange(e, index)}
