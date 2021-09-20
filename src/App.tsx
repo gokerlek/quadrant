@@ -1,12 +1,10 @@
 import { Container } from "./component/container";
-import { Chart } from "./component/chart";
-import { Table } from "./component/table";
+import { Quadrant } from "./component/quadrant";
 
 function App() {
   return (
     <Container>
-      <Chart />
-      <Table />
+      <Quadrant />
     </Container>
   );
 }
