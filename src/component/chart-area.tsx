@@ -2,12 +2,12 @@ export const ChartArea = () => {
   return (
     <>
       <div className='absolute  transform translate translate-y-5 left-0 bottom-0 '>
-        <p>Completeness of Vision</p>
+        Completeness of Vision &#8594;
       </div>
       <div
         style={{ bottom: "0", left: "0" }}
-        className='absolute  transform -translate-x-60 -translate-y-12  -rotate-90'>
-        Ability to Execute
+        className='absolute  transform -translate-x-60 -translate-y-14  -rotate-90'>
+        Ability to Execute &#8594;
       </div>
       <div className='absolute text-white bg-LIGHT_BLUE border-solid border-transparent p-1 my-2 rounded-md left-1/4 transform -translate-x-1/2'>
         Challengers
